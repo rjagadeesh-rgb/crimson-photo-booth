@@ -1,122 +1,140 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#25070d">
-<title>Crimson Custom Cakes | Sweet Moments</title>
+<meta name="theme-color" content="#21090f">
+<title>Crimson Custom Cakes | Photo Booth</title>
 <style>
-:root{--wine:#5b1024;--deep:#21070d;--gold:#d7b36a;--cream:#fff8ef;--rose:#f4e3df}
-*{box-sizing:border-box}
-body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#6b1c32 0,#25070d 48%,#160509 100%);color:var(--cream);font-family:Georgia,"Times New Roman",serif}
-main{width:min(100% - 28px,560px);margin:0 auto;padding:28px 0 40px}
-.brand{text-align:center;margin:8px 0 22px}
-.mark{width:58px;height:58px;border:1px solid var(--gold);border-radius:50%;display:grid;place-items:center;margin:0 auto 10px;color:var(--gold);font-size:27px}
-h1{font-size:clamp(28px,7vw,40px);font-weight:500;letter-spacing:.02em;margin:0}
-.sub{font:11px/1.5 Arial,sans-serif;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-top:8px}
-.intro{text-align:center;color:#f4ded9;font:14px/1.6 Arial,sans-serif;margin:18px auto 22px;max-width:390px}
-.panel{background:rgba(255,248,239,.07);border:1px solid rgba(215,179,106,.45);border-radius:22px;padding:14px;box-shadow:0 18px 50px #0005}
-.preview{position:relative;background:#120509;border-radius:15px;overflow:hidden;aspect-ratio:4/5;display:grid;place-items:center}
-video{width:100%;height:100%;object-fit:cover;display:block}
-canvas{display:none;width:100%;height:100%;object-fit:contain;background:#120509}
-.placeholder{position:absolute;text-align:center;padding:25px;color:#f4ded9;font:14px/1.6 Arial,sans-serif}
-.placeholder strong{display:block;color:var(--gold);font:20px Georgia,serif;margin-bottom:8px}
-.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:13px}
-button,a.btn{border:1px solid var(--gold);border-radius:999px;padding:13px 12px;background:var(--gold);color:#2a0a11;font: bold 13px Arial,sans-serif;text-align:center;text-decoration:none;cursor:pointer}
-button.secondary{background:transparent;color:var(--cream)}
+:root{--wine:#310d18;--wine2:#5a1729;--gold:#e7c78a;--cream:#fff7ed}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#5b1a2d 0,#21090f 55%,#10070a 100%);color:var(--cream);font-family:Georgia,serif;min-height:100vh}
+main{width:min(100% - 28px,520px);margin:0 auto;padding:25px 0 34px;text-align:center}
+.brand{width:145px;height:105px;object-fit:contain;border-radius:10px;background:#080608;padding:4px;display:block;margin:0 auto 12px}
+h1{font-size:clamp(25px,7vw,34px);margin:5px 0;color:#fff1df;letter-spacing:.4px}
+.tag{color:var(--gold);font-style:italic;margin:0 0 20px;font-size:15px}
+.panel{background:rgba(12,5,8,.66);border:1px solid rgba(231,199,138,.42);border-radius:20px;padding:16px;box-shadow:0 14px 40px #0006}
+.preview-wrap{position:relative;background:#090709;border-radius:14px;overflow:hidden;aspect-ratio:4/3;display:grid;place-items:center}
+video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+.placeholder{color:#d9c5c5;padding:20px;line-height:1.5}
+#countdown{position:absolute;inset:0;display:none;place-items:center;background:#0005;color:white;font: bold 88px Arial;text-shadow:0 3px 12px #000}
+label{display:block;text-align:left;color:var(--gold);font-size:14px;margin:16px 0 7px}
+select,button{font:inherit;border-radius:999px}
+select{width:100%;padding:12px;background:#1d0b11;color:white;border:1px solid #a97856}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:13px}
+button{border:1px solid var(--gold);padding:12px 10px;background:transparent;color:var(--cream);cursor:pointer;font-size:14px}
+button.primary{background:linear-gradient(135deg,#d9b778,#f0dba9);color:#281017;border:0;font-weight:bold}
 button:disabled{opacity:.45;cursor:not-allowed}
-.message{min-height:22px;text-align:center;color:#f3d8cf;font:12px/1.5 Arial,sans-serif;margin:12px 0 0}
-.actions{display:none;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
-.note{text-align:center;color:#d7bdb5;font:11px/1.6 Arial,sans-serif;margin:16px 10px 0}
-a.instagram{display:inline-block;color:var(--gold);text-decoration:none;margin-top:8px}
-@media(max-width:390px){.controls,.actions{grid-template-columns:1fr 1fr}button{font-size:12px;padding:12px 8px}}
+#result{display:none;margin-top:18px}
+#photo{width:100%;border-radius:12px;border:1px solid var(--gold);display:block;background:#090709}
+.result-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}
+.note{font:12px/1.5 Arial,sans-serif;color:#cdbfc0;margin:15px 4px 0}
+.status{min-height:20px;font:13px Arial,sans-serif;color:var(--gold);margin-top:10px}
+@media(max-width:360px){.controls button,.result-actions button{font-size:12px;padding:11px 6px}}
 </style>
 </head>
 <body>
 <main>
-  <header class="brand">
-    <div class="mark" aria-hidden="true">✿</div>
-    <h1>Crimson Custom Cakes</h1>
-    <div class="sub">A little moment. A lasting memory.</div>
-  </header>
-  <p class="intro">Celebrate your sweet moment. Take a photo with your cake and save a keepsake with our special Crimson frame.</p>
-  <section class="panel" aria-label="Photo booth">
-    <div class="preview" id="preview">
-      <video id="video" autoplay playsinline muted></video>
-      <canvas id="canvas"></canvas>
-      <div class="placeholder" id="placeholder"><strong>Your sweet moment starts here</strong>Tap “Start camera” and allow camera access to begin.</div>
+  <img class="brand" src="crimson-logo.jpg" alt="Crimson Custom Cakes logo">
+  <h1>Crimson Custom Cakes</h1>
+  <p class="tag">A little moment. A lasting memory.</p>
+  <section class="panel">
+    <div class="preview-wrap">
+      <video id="video" autoplay playsinline muted style="display:none"></video>
+      <div class="placeholder" id="placeholder">Your photo booth is ready.<br>Tap <b>Start Camera</b> to begin.</div>
+      <div id="countdown"></div>
     </div>
+    <label for="theme">Choose your photo frame</label>
+    <select id="theme">
+      <option value="Birthday">Birthday Celebration</option>
+      <option value="Wedding">Wedding Moments</option>
+      <option value="Anniversary">Anniversary Love</option>
+    </select>
     <div class="controls">
-      <button id="start">Start camera</button>
-      <button id="switch" class="secondary" disabled>Switch camera</button>
-      <button id="capture" disabled>Take photo</button>
-      <button id="retake" class="secondary" disabled>Retake</button>
+      <button class="primary" id="start">Start Camera</button>
+      <button id="switch" disabled>Switch Camera</button>
+      <button class="primary" id="capture" disabled>3-2-1 Capture</button>
+      <button id="stop" disabled>Stop Camera</button>
     </div>
-    <div class="actions" id="actions">
-      <button id="download">Download photo</button>
-      <button id="share" class="secondary">Share photo</button>
+    <div class="status" id="status" aria-live="polite"></div>
+    <div id="result">
+      <canvas id="photo"></canvas>
+      <div class="result-actions">
+        <button class="primary" id="download">Download Photo</button>
+        <button id="share">Share Photo</button>
+        <button id="retake" style="grid-column:1/-1">Retake Photo</button>
+      </div>
     </div>
-    <p class="message" id="message" role="status">Your photos stay on your device. They are not uploaded to our server.</p>
   </section>
-  <p class="note">Tag us and share your celebration<br><a class="instagram" href="https://www.instagram.com/crimson.custom.cakes/" target="_blank" rel="noopener">@crimson.custom.cakes</a><br><br>Camera access requires this page to be published over HTTPS.</p>
+  <p class="note">Your camera is used only to take the picture. Photos are created on this device and are not uploaded to Crimson Custom Cakes.</p>
 </main>
 <script>
-const video=document.getElementById('video'), canvas=document.getElementById('canvas'), ctx=canvas.getContext('2d');
-const startBtn=document.getElementById('start'), switchBtn=document.getElementById('switch'), captureBtn=document.getElementById('capture'), retakeBtn=document.getElementById('retake');
-const placeholder=document.getElementById('placeholder'), message=document.getElementById('message'), actions=document.getElementById('actions');
-let stream=null, facing='user', photoReady=false, lastBlob=null;
-
-function say(t){message.textContent=t}
+const video=document.getElementById('video'), placeholder=document.getElementById('placeholder');
+const startBtn=document.getElementById('start'), switchBtn=document.getElementById('switch');
+const captureBtn=document.getElementById('capture'), stopBtn=document.getElementById('stop');
+const countdown=document.getElementById('countdown'), statusEl=document.getElementById('status');
+const result=document.getElementById('result'), canvas=document.getElementById('photo');
+let stream=null, facing='user', lastBlob=null;
+function setStatus(t){statusEl.textContent=t}
 async function startCamera(){
-  stopCamera();
-  if(!navigator.mediaDevices?.getUserMedia){say('Camera is unavailable here. Open the published HTTPS website in Safari or Chrome.');return}
-  try{
-    stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing},audio:false});
-    video.srcObject=stream; await video.play();
-    video.style.display='block'; canvas.style.display='none'; placeholder.style.display='none';
-    captureBtn.disabled=false; switchBtn.disabled=false; retakeBtn.disabled=true; actions.style.display='none'; photoReady=false;
-    say('Camera ready! Frame your cake and smile.');
-  }catch(e){say('Camera permission was not granted. Allow camera access in your browser settings and try again.')}
+ try{
+  if(stream) stream.getTracks().forEach(t=>t.stop());
+  stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing},audio:false});
+  video.srcObject=stream; video.style.display='block'; placeholder.style.display='none';
+  await video.play(); startBtn.disabled=true;switchBtn.disabled=false;captureBtn.disabled=false;stopBtn.disabled=false;
+  setStatus('Camera is on. Choose a frame and capture!');
+ }catch(e){setStatus('Camera access was blocked. Allow camera permission and try again.');}
 }
-function stopCamera(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}}
-function drawFrame(){
-  const w=video.videoWidth,h=video.videoHeight;
-  if(!w||!h){say('Camera is still starting. Please try again in a moment.');return}
-  canvas.width=w;canvas.height=h;
-  ctx.drawImage(video,0,0,w,h);
-  const band=Math.max( Math.round(h*.105), 90);
-  // Elegant crimson footer band and fine gold rules
-  ctx.fillStyle='rgba(37,7,13,.93)';ctx.fillRect(0,h-band,w,band);
-  ctx.fillStyle='#d7b36a';ctx.fillRect(0,h-band,w,Math.max(2,h*.004));
-  ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.fillStyle='#fff8ef';ctx.font=`${Math.max(18,Math.round(w*.045))}px Georgia`;
-  ctx.fillText('Crimson Custom Cakes',w/2,h-band*.58);
-  ctx.fillStyle='#e5c98f';ctx.font=`${Math.max(10,Math.round(w*.022))}px Arial`;
-  ctx.fillText('A LITTLE MOMENT. A LASTING MEMORY.',w/2,h-band*.25);
-  // thin gold photo border
-  ctx.strokeStyle='rgba(215,179,106,.95)';ctx.lineWidth=Math.max(3,w*.008);ctx.strokeRect(ctx.lineWidth/2,ctx.lineWidth/2,w-ctx.lineWidth,h-ctx.lineWidth);
-  canvas.style.display='block';video.style.display='none';photoReady=true;
-  canvas.toBlob(b=>lastBlob=b,'image/jpeg',.94);
-  captureBtn.disabled=true;retakeBtn.disabled=false;actions.style.display='grid';say('Lovely! Your Crimson keepsake is ready.');
+function stopCamera(){
+ if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;
+ video.srcObject=null;video.style.display='none';placeholder.style.display='block';
+ startBtn.disabled=false;switchBtn.disabled=true;captureBtn.disabled=true;stopBtn.disabled=true;
+ setStatus('Camera stopped.');
 }
-captureBtn.addEventListener('click',drawFrame);
 startBtn.addEventListener('click',startCamera);
-switchBtn.addEventListener('click',()=>{facing=facing==='user'?'environment':'user';startCamera()});
-retakeBtn.addEventListener('click',()=>{canvas.style.display='none';video.style.display='block';photoReady=false;captureBtn.disabled=false;retakeBtn.disabled=true;actions.style.display='none';say('Ready for another shot!')});
+switchBtn.addEventListener('click',async()=>{facing=facing==='user'?'environment':'user';await startCamera()});
+stopBtn.addEventListener('click',stopCamera);
+function roundedRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.stroke()}
+function loadImage(src){return new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>resolve(im);im.onerror=reject;im.src=src})}
+async function takePhoto(){
+ if(!stream)return;
+ captureBtn.disabled=true;countdown.style.display='grid';
+ for(let n=3;n>0;n--){countdown.textContent=n;await new Promise(r=>setTimeout(r,750))}
+ countdown.textContent='♥';await new Promise(r=>setTimeout(r,250));countdown.style.display='none';
+ const w=1080,h=1350,ctx=canvas.getContext('2d');canvas.width=w;canvas.height=h;
+ ctx.fillStyle='#21090f';ctx.fillRect(0,0,w,h);
+ const vw=video.videoWidth,vh=video.videoHeight,ratio=Math.max(w/(h-210),vw/vh);
+ const cw=vw, ch=vh, targetRatio=w/(h-210);let sx=0,sy=0,sw=cw,sh=ch;
+ if(cw/ch>targetRatio){sw=ch*targetRatio;sx=(cw-sw)/2}else{sh=cw/targetRatio;sy=(ch-sh)/2}
+ if(facing==='user'){ctx.translate(w,0);ctx.scale(-1,1)}
+ ctx.drawImage(video,sx,sy,sw,sh,0,0,w,h-210);
+ if(facing==='user'){ctx.setTransform(1,0,0,1,0,0)}
+ const theme=document.getElementById('theme').value;
+ ctx.fillStyle='#21090f';ctx.fillRect(0,h-210,w,210);
+ ctx.strokeStyle='#e7c78a';ctx.lineWidth=9;roundedRect(ctx,22,22,w-44,h-44,28);
+ ctx.strokeStyle='rgba(231,199,138,.75)';ctx.lineWidth=3;ctx.strokeRect(42,h-190,w-84,170);
+ ctx.fillStyle='#f5dfb5';ctx.textAlign='center';ctx.font='italic 54px Georgia';ctx.fillText(theme+' Memories',w/2,h-118);
+ ctx.font='32px Georgia';ctx.fillText('A little moment. A lasting memory.',w/2,h-72);
+ const logo=await loadImage('crimson-logo.jpg');
+ const maxW=245,maxH=100,scale=Math.min(maxW/logo.width,maxH/logo.height);
+ const lw=logo.width*scale,lh=logo.height*scale;
+ ctx.drawImage(logo,(w-lw)/2,h-62-lh,lw,lh);
+ result.style.display='block';canvas.scrollIntoView({behavior:'smooth',block:'nearest'});
+ canvas.toBlob(b=>{lastBlob=b},'image/png');captureBtn.disabled=false;
+ setStatus('Your Crimson memory is ready!');
+}
+captureBtn.addEventListener('click',takePhoto);
+document.getElementById('retake').addEventListener('click',()=>{result.style.display='none';setStatus('Ready for another photo!')});
 document.getElementById('download').addEventListener('click',()=>{
- if(!photoReady)return;
- canvas.toBlob(blob=>{const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='Crimson-Custom-Cakes-Sweet-Moment.jpg';a.click();URL.revokeObjectURL(url)},'image/jpeg',.94);
+ canvas.toBlob(blob=>{const a=document.createElement('a');const u=URL.createObjectURL(blob);a.href=u;a.download='Crimson-Custom-Cakes-photo.png';a.click();URL.revokeObjectURL(u)},'image/png');
 });
 document.getElementById('share').addEventListener('click',async()=>{
- if(!photoReady)return;
  canvas.toBlob(async blob=>{
-  const file=new File([blob],'Crimson-Custom-Cakes-Sweet-Moment.jpg',{type:'image/jpeg'});
-  try{if(navigator.canShare?.({files:[file]})){await navigator.share({files:[file],title:'My sweet moment with Crimson Custom Cakes',text:'A sweet moment with @crimson.custom.cakes'});}
-  else{say('Photo is ready. Download it, then add it to your Instagram Story or share it on WhatsApp.');}}
-  catch(e){if(e.name!=='AbortError')say('Use Download photo, then share the saved image on Instagram or WhatsApp.')}
- },'image/jpeg',.94);
+  const file=new File([blob],'Crimson-Custom-Cakes-photo.png',{type:'image/png'});
+  try{if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:'Crimson Custom Cakes',text:'A little moment. A lasting memory.'})}
+  else{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=file.name;a.click();setStatus('Sharing is not supported here, so the photo was downloaded.')}
+  }catch(e){if(e.name!=='AbortError')setStatus('Could not open sharing on this device. Please download the photo.')}
+ },'image/png');
 });
-window.addEventListener('pagehide',stopCamera);
 </script>
 </body>
 </html>
